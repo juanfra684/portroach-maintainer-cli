@@ -86,7 +86,6 @@ def headers_box():
             uni_line_vertical +
             title_3column.center(size_3column + 2) +
             uni_line_vertical)
-    lines_box("middle")
 
 
 for i in json_request("totals"):
@@ -104,6 +103,7 @@ for i in json_request("totals"):
         headers_box()
         for ii in results_maintainer:
             if ii["newver"] != None:
+                lines_box("middle")
                 print (uni_line_vertical + " " +
                         (ii["cat"] + "/" + ii["name"]).ljust(size_1column + 1) +
                         uni_line_vertical +
