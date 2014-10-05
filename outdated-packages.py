@@ -22,7 +22,7 @@ import sys
 if len(sys.argv) == 1:
     sys.exit(1)
 
-portroach_server = "http://ftp.fr.openbsd.org/portscout/json/"
+portroach_server = "http://portroach.openbsd.org/json/"
 
 # https://en.wikipedia.org/wiki/Box-drawing_character
 uni_left_top =        "\u250C"
