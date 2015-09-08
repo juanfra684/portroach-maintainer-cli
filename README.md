@@ -2,8 +2,9 @@ Portroach CLI client
 ====================
 
 ```sh
-$ sudo pkg_add python-3.4.1 git
+$ doas pkg_add python-3.4.3 git
 $ git clone https://gitlab.com/juanfra684/portroach-maintainer-cli.git
+$ cd portroach-maintainer-cli
 $ ./outdated-packages.py juanfra@openbsd.org
 ┌─────────────────────┬─────────┬──────────┐
 │         Port        │ OpenBSD │ Upstream │
