@@ -46,7 +46,7 @@ size_2column = len(title_2column)
 size_3column = len(title_3column)
 
 def json_request(json_file):
-    portroach_json = portroach_server + json_file + ".json"
+    portroach_json = portroach_server + urllib.parse.quote(json_file) + ".json"
     portroach_data = urllib.request.urlopen(portroach_json).read().decode("utf8")
     portroach_dict = json.loads(portroach_data)
     return portroach_dict
@@ -88,7 +88,7 @@ def headers_box():
             uni_line_vertical)
 
 
-for i in json_request("totals"):
+for i in json_request("totals")["results"]:
     if sys.argv[1] in i["maintainer"]:
         results_maintainer = json_request(i["maintainer"])
         for ii in results_maintainer:
