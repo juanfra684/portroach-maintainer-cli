@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.4
+#!/usr/bin/env python3.5
 
 # Copyright (c) 2014, Juan Francisco Cantero Hurtado <iam@juanfra.info>
 #
