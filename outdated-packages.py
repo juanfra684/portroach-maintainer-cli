@@ -25,17 +25,17 @@ if len(sys.argv) == 1:
 portroach_server = "http://portroach.openbsd.org/json/"
 
 # https://en.wikipedia.org/wiki/Box-drawing_character
-uni_left_top =        "\u250C"
-uni_left_bottom =     "\u2514"
-uni_right_top =       "\u2510"
-uni_right_bottom =    "\u2518"
-uni_middle_top =      "\u252C"
-uni_middle_bottom =   "\u2534"
-uni_middle_left =     "\u251C"
-uni_middle_right =    "\u2524"
-uni_crux =            "\u253C"
+uni_left_top = "\u250C"
+uni_left_bottom = "\u2514"
+uni_right_top = "\u2510"
+uni_right_bottom = "\u2518"
+uni_middle_top = "\u252C"
+uni_middle_bottom = "\u2534"
+uni_middle_left = "\u251C"
+uni_middle_right = "\u2524"
+uni_crux = "\u253C"
 uni_line_horizontal = "\u2500"
-uni_line_vertical =   "\u2502"
+uni_line_vertical = "\u2502"
 
 title_1column = "Port"
 title_2column = "OpenBSD"
@@ -45,47 +45,60 @@ size_1column = len(title_1column)
 size_2column = len(title_2column)
 size_3column = len(title_3column)
 
+
 def json_request(json_file):
     portroach_json = portroach_server + urllib.parse.quote(json_file) + ".json"
-    portroach_data = urllib.request.urlopen(portroach_json).read().decode("utf8")
+    portroach_data = (
+        urllib.request.urlopen(portroach_json).read().decode("utf8")
+    )
     portroach_dict = json.loads(portroach_data)
     return portroach_dict
 
+
 def lines_box(position):
     if position == "top":
-        print (uni_left_top +
-                (uni_line_horizontal * (size_1column + 2)) +
-                uni_middle_top +
-                (uni_line_horizontal * (size_2column + 2)) +
-                uni_middle_top +
-                (uni_line_horizontal * (size_3column + 2)) +
-                uni_right_top)
+        print(
+            uni_left_top
+            + (uni_line_horizontal * (size_1column + 2))
+            + uni_middle_top
+            + (uni_line_horizontal * (size_2column + 2))
+            + uni_middle_top
+            + (uni_line_horizontal * (size_3column + 2))
+            + uni_right_top
+        )
     elif position == "middle":
-        print (uni_middle_left +
-                (uni_line_horizontal * (size_1column + 2)) +
-                uni_crux +
-                (uni_line_horizontal * (size_2column + 2)) +
-                uni_crux +
-                (uni_line_horizontal * (size_3column + 2)) +
-                uni_middle_right)
+        print(
+            uni_middle_left
+            + (uni_line_horizontal * (size_1column + 2))
+            + uni_crux
+            + (uni_line_horizontal * (size_2column + 2))
+            + uni_crux
+            + (uni_line_horizontal * (size_3column + 2))
+            + uni_middle_right
+        )
     elif position == "bottom":
-        print (uni_left_bottom +
-                (uni_line_horizontal * (size_1column + 2)) +
-                uni_middle_bottom +
-                (uni_line_horizontal * (size_2column + 2)) +
-                uni_middle_bottom +
-                (uni_line_horizontal * (size_3column + 2)) +
-                uni_right_bottom)
+        print(
+            uni_left_bottom
+            + (uni_line_horizontal * (size_1column + 2))
+            + uni_middle_bottom
+            + (uni_line_horizontal * (size_2column + 2))
+            + uni_middle_bottom
+            + (uni_line_horizontal * (size_3column + 2))
+            + uni_right_bottom
+        )
+
 
 def headers_box():
     lines_box("top")
-    print (uni_line_vertical +
-            title_1column.center(size_1column + 2) +
-            uni_line_vertical +
-            title_2column.center(size_2column + 2) +
-            uni_line_vertical +
-            title_3column.center(size_3column + 2) +
-            uni_line_vertical)
+    print(
+        uni_line_vertical
+        + title_1column.center(size_1column + 2)
+        + uni_line_vertical
+        + title_2column.center(size_2column + 2)
+        + uni_line_vertical
+        + title_3column.center(size_3column + 2)
+        + uni_line_vertical
+    )
 
 
 for i in json_request("totals")["results"]:
@@ -104,12 +117,17 @@ for i in json_request("totals")["results"]:
         for ii in results_maintainer:
             if ii["newver"] != None:
                 lines_box("middle")
-                print (uni_line_vertical + " " +
-                        (ii["cat"] + "/" + ii["name"]).ljust(size_1column + 1) +
-                        uni_line_vertical +
-                        ii["ver"].rjust(size_2column + 1) +
-                        " " + uni_line_vertical +
-                        ii["newver"].rjust(size_3column + 1) +
-                        " " + uni_line_vertical)
+                print(
+                    uni_line_vertical
+                    + " "
+                    + (ii["cat"] + "/" + ii["name"]).ljust(size_1column + 1)
+                    + uni_line_vertical
+                    + ii["ver"].rjust(size_2column + 1)
+                    + " "
+                    + uni_line_vertical
+                    + ii["newver"].rjust(size_3column + 1)
+                    + " "
+                    + uni_line_vertical
+                )
         lines_box("bottom")
         break
