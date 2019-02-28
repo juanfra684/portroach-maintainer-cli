@@ -107,7 +107,7 @@ for result in json_request("totals")["results"]:
     if email_addr in result["maintainer"]:
         maintained_ports = json_request(result["maintainer"])
         for port in maintained_ports:
-            if port["newver"] != None:
+            if port["newver"]:
                 if len(port["cat"]) + len(port["name"]) + 1 > size_1column:
                     size_1column = len(port["cat"]) + len(port["name"]) + 1
                 if len(port["ver"]) > size_2column:
@@ -117,7 +117,7 @@ for result in json_request("totals")["results"]:
 
         headers_box()
         for port in maintained_ports:
-            if port["newver"] != None:
+            if port["newver"]:
                 lines_box("middle")
                 print(
                     uni_line_vertical
