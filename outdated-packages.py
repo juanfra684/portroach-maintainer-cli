@@ -132,4 +132,3 @@ for result in json_request("totals")["results"]:
                     + uni_line_vertical
                 )
         lines_box("bottom")
-        break
