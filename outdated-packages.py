@@ -102,31 +102,32 @@ def headers_box():
     )
 
 
-for i in json_request("totals")["results"]:
-    if sys.argv[1] in i["maintainer"]:
-        results_maintainer = json_request(i["maintainer"])
-        for ii in results_maintainer:
-            if ii["newver"] != None:
-                if len(ii["cat"]) + len(ii["name"]) + 1 > size_1column:
-                    size_1column = len(ii["cat"]) + len(ii["name"]) + 1
-                if len(ii["ver"]) > size_2column:
-                    size_2column = len(ii["ver"])
-                if len(ii["newver"]) > size_3column:
-                    size_3column = len(ii["newver"])
+for result in json_request("totals")["results"]:
+    email_addr = sys.argv[1]
+    if email_addr in result["maintainer"]:
+        maintained_ports = json_request(result["maintainer"])
+        for port in maintained_ports:
+            if port["newver"] != None:
+                if len(port["cat"]) + len(port["name"]) + 1 > size_1column:
+                    size_1column = len(port["cat"]) + len(port["name"]) + 1
+                if len(port["ver"]) > size_2column:
+                    size_2column = len(port["ver"])
+                if len(port["newver"]) > size_3column:
+                    size_3column = len(port["newver"])
 
         headers_box()
-        for ii in results_maintainer:
-            if ii["newver"] != None:
+        for port in maintained_ports:
+            if port["newver"] != None:
                 lines_box("middle")
                 print(
                     uni_line_vertical
                     + " "
-                    + (ii["cat"] + "/" + ii["name"]).ljust(size_1column + 1)
+                    + (port["cat"] + "/" + port["name"]).ljust(size_1column + 1)
                     + uni_line_vertical
-                    + ii["ver"].rjust(size_2column + 1)
+                    + port["ver"].rjust(size_2column + 1)
                     + " "
                     + uni_line_vertical
-                    + ii["newver"].rjust(size_3column + 1)
+                    + port["newver"].rjust(size_3column + 1)
                     + " "
                     + uni_line_vertical
                 )
