@@ -23,7 +23,7 @@ if len(sys.argv) == 1:
     print(f"usage: {sys.argv[0]} maintainer@example.com", file=sys.stderr)
     sys.exit(1)
 
-portroach_server = "http://portroach.openbsd.org/json/"
+portroach_server = "https://portroach.openbsd.org/json/"
 
 # https://en.wikipedia.org/wiki/Box-drawing_character
 uni_left_top = "\u250C"
