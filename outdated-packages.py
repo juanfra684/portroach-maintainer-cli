@@ -19,6 +19,7 @@ import urllib.parse
 import json
 import sys
 import argparse
+from collections import Counter
 
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument("email", help="maintainer's email")
@@ -119,9 +120,23 @@ def headers_box():
     )
 
 
-for result in json_request("totals")["results"]:
-    if args.email in result["maintainer"]:
-        maintained_ports = json_request(result["maintainer"])
+maintainers = json_request("totals")["results"]
+maintainers_found = len(
+    Counter(
+        maintainer["maintainer"]
+        for maintainer in maintainers
+        if args.email in maintainer["maintainer"]
+    )
+)
+
+if maintainers_found == 0:
+    sys.exit('"' + args.email + '"' + " was not found in the server.")
+elif maintainers_found > 1:
+    sys.exit("There are various entries containing " + '"' + args.email + '".')
+
+for maintainer in maintainers:
+    if args.email in maintainer["maintainer"]:
+        maintained_ports = json_request(maintainer["maintainer"])
         for port in maintained_ports:
             if port["newver"]:
                 if len(port["cat"]) + len(port["name"]) + 1 > size_1column:
