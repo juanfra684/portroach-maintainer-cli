@@ -1,3 +1,4 @@
 .mypy_cache/
 .vscode/
 .*.kate-swp
+__pycache__/
