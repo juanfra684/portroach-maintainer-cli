@@ -18,25 +18,42 @@ import urllib.request
 import urllib.parse
 import json
 import sys
+import argparse
 
-if len(sys.argv) == 1:
-    print(f"usage: {sys.argv[0]} maintainer@example.com", file=sys.stderr)
-    sys.exit(1)
+arg_parser = argparse.ArgumentParser()
+arg_parser.add_argument("email", help="maintainer's email")
+arg_parser.add_argument(
+    "-p", "--plain", help="disable the use of utf-8", action="store_true"
+)
+args = arg_parser.parse_args()
 
 portroach_server = "https://portroach.openbsd.org/json/"
 
 # https://en.wikipedia.org/wiki/Box-drawing_character
-box_left_top = "\u250C"
-box_left_bottom = "\u2514"
-box_right_top = "\u2510"
-box_right_bottom = "\u2518"
-box_middle_top = "\u252C"
-box_middle_bottom = "\u2534"
-box_middle_left = "\u251C"
-box_middle_right = "\u2524"
-box_crux = "\u253C"
-box_line_horizontal = "\u2500"
-box_line_vertical = "\u2502"
+if args.plain:
+    box_left_top = "+"
+    box_left_bottom = "+"
+    box_right_top = "+"
+    box_right_bottom = "+"
+    box_middle_top = "+"
+    box_middle_bottom = "+"
+    box_middle_left = "+"
+    box_middle_right = "+"
+    box_crux = "+"
+    box_line_horizontal = "-"
+    box_line_vertical = "|"
+else:
+    box_left_top = "\u250C"
+    box_left_bottom = "\u2514"
+    box_right_top = "\u2510"
+    box_right_bottom = "\u2518"
+    box_middle_top = "\u252C"
+    box_middle_bottom = "\u2534"
+    box_middle_left = "\u251C"
+    box_middle_right = "\u2524"
+    box_crux = "\u253C"
+    box_line_horizontal = "\u2500"
+    box_line_vertical = "\u2502"
 
 title_1column = "Port"
 title_2column = "OpenBSD"
@@ -103,8 +120,7 @@ def headers_box():
 
 
 for result in json_request("totals")["results"]:
-    email_addr = sys.argv[1]
-    if email_addr in result["maintainer"]:
+    if args.email in result["maintainer"]:
         maintained_ports = json_request(result["maintainer"])
         for port in maintained_ports:
             if port["newver"]:
