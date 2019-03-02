@@ -22,9 +22,18 @@ import argparse
 from collections import Counter
 
 arg_parser = argparse.ArgumentParser()
-arg_parser.add_argument("email", help="maintainer's email")
 arg_parser.add_argument(
+    "email", help="maintainer's email (e.g. maintainer@example.com)"
+)
+group_parser = arg_parser.add_mutually_exclusive_group()
+group_parser.add_argument(
     "-p", "--plain", help="disable the use of utf-8", action="store_true"
+)
+group_parser.add_argument(
+    "-d",
+    "--dos",
+    help="use a DOS style double line to draw the table",
+    action="store_true",
 )
 args = arg_parser.parse_args()
 
@@ -43,18 +52,34 @@ if args.plain:
     box_crux = "+"
     box_line_horizontal = "-"
     box_line_vertical = "|"
+    box_line_external_vertical = box_line_vertical
+elif args.dos:
+    box_left_top = "╔"  # ┌
+    box_left_bottom = "╚"  # └
+    box_right_top = "╗"  # ┐
+    box_right_bottom = "╝"  # ┘
+    box_middle_top = "╤"  # ┬
+    box_middle_bottom = "╧"  # ┴
+    box_middle_left = "╠"  # ├
+    box_middle_right = "╣"  # ┤
+    box_crux = "╪"  # ┼
+    box_line_horizontal = "═"  # ═
+    box_line_vertical = "│"  # │
+    box_line_external_vertical = "║"
 else:
-    box_left_top = "\u250C"
-    box_left_bottom = "\u2514"
-    box_right_top = "\u2510"
-    box_right_bottom = "\u2518"
-    box_middle_top = "\u252C"
-    box_middle_bottom = "\u2534"
-    box_middle_left = "\u251C"
-    box_middle_right = "\u2524"
-    box_crux = "\u253C"
-    box_line_horizontal = "\u2500"
-    box_line_vertical = "\u2502"
+    box_left_top = "┌"
+    box_left_bottom = "└"
+    box_right_top = "┐"
+    box_right_bottom = "┘"
+    box_middle_top = "┬"
+    box_middle_bottom = "┴"
+    box_middle_left = "├"
+    box_middle_right = "┤"
+    box_crux = "┼"
+    box_line_horizontal = "─"
+    box_line_vertical = "│"
+    box_line_external_vertical = box_line_vertical
+
 
 title_1column = "Port"
 title_2column = "OpenBSD"
@@ -110,13 +135,13 @@ def lines_box(position):
 def headers_box():
     lines_box("top")
     print(
-        box_line_vertical
+        box_line_external_vertical
         + title_1column.center(size_1column + 2)
         + box_line_vertical
         + title_2column.center(size_2column + 2)
         + box_line_vertical
         + title_3column.center(size_3column + 2)
-        + box_line_vertical
+        + box_line_external_vertical
     )
 
 
@@ -151,7 +176,7 @@ for maintainer in maintainers:
             if port["newver"]:
                 lines_box("middle")
                 print(
-                    box_line_vertical
+                    box_line_external_vertical
                     + " "
                     + (port["cat"] + "/" + port["name"]).ljust(size_1column + 1)
                     + box_line_vertical
@@ -160,6 +185,6 @@ for maintainer in maintainers:
                     + box_line_vertical
                     + port["newver"].rjust(size_3column + 1)
                     + " "
-                    + box_line_vertical
+                    + box_line_external_vertical
                 )
         lines_box("bottom")
