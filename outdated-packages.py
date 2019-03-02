@@ -26,17 +26,17 @@ if len(sys.argv) == 1:
 portroach_server = "https://portroach.openbsd.org/json/"
 
 # https://en.wikipedia.org/wiki/Box-drawing_character
-uni_left_top = "\u250C"
-uni_left_bottom = "\u2514"
-uni_right_top = "\u2510"
-uni_right_bottom = "\u2518"
-uni_middle_top = "\u252C"
-uni_middle_bottom = "\u2534"
-uni_middle_left = "\u251C"
-uni_middle_right = "\u2524"
-uni_crux = "\u253C"
-uni_line_horizontal = "\u2500"
-uni_line_vertical = "\u2502"
+box_left_top = "\u250C"
+box_left_bottom = "\u2514"
+box_right_top = "\u2510"
+box_right_bottom = "\u2518"
+box_middle_top = "\u252C"
+box_middle_bottom = "\u2534"
+box_middle_left = "\u251C"
+box_middle_right = "\u2524"
+box_crux = "\u253C"
+box_line_horizontal = "\u2500"
+box_line_vertical = "\u2502"
 
 title_1column = "Port"
 title_2column = "OpenBSD"
@@ -59,46 +59,46 @@ def json_request(json_file):
 def lines_box(position):
     if position == "top":
         print(
-            uni_left_top
-            + (uni_line_horizontal * (size_1column + 2))
-            + uni_middle_top
-            + (uni_line_horizontal * (size_2column + 2))
-            + uni_middle_top
-            + (uni_line_horizontal * (size_3column + 2))
-            + uni_right_top
+            box_left_top
+            + (box_line_horizontal * (size_1column + 2))
+            + box_middle_top
+            + (box_line_horizontal * (size_2column + 2))
+            + box_middle_top
+            + (box_line_horizontal * (size_3column + 2))
+            + box_right_top
         )
     elif position == "middle":
         print(
-            uni_middle_left
-            + (uni_line_horizontal * (size_1column + 2))
-            + uni_crux
-            + (uni_line_horizontal * (size_2column + 2))
-            + uni_crux
-            + (uni_line_horizontal * (size_3column + 2))
-            + uni_middle_right
+            box_middle_left
+            + (box_line_horizontal * (size_1column + 2))
+            + box_crux
+            + (box_line_horizontal * (size_2column + 2))
+            + box_crux
+            + (box_line_horizontal * (size_3column + 2))
+            + box_middle_right
         )
     elif position == "bottom":
         print(
-            uni_left_bottom
-            + (uni_line_horizontal * (size_1column + 2))
-            + uni_middle_bottom
-            + (uni_line_horizontal * (size_2column + 2))
-            + uni_middle_bottom
-            + (uni_line_horizontal * (size_3column + 2))
-            + uni_right_bottom
+            box_left_bottom
+            + (box_line_horizontal * (size_1column + 2))
+            + box_middle_bottom
+            + (box_line_horizontal * (size_2column + 2))
+            + box_middle_bottom
+            + (box_line_horizontal * (size_3column + 2))
+            + box_right_bottom
         )
 
 
 def headers_box():
     lines_box("top")
     print(
-        uni_line_vertical
+        box_line_vertical
         + title_1column.center(size_1column + 2)
-        + uni_line_vertical
+        + box_line_vertical
         + title_2column.center(size_2column + 2)
-        + uni_line_vertical
+        + box_line_vertical
         + title_3column.center(size_3column + 2)
-        + uni_line_vertical
+        + box_line_vertical
     )
 
 
@@ -120,15 +120,15 @@ for result in json_request("totals")["results"]:
             if port["newver"]:
                 lines_box("middle")
                 print(
-                    uni_line_vertical
+                    box_line_vertical
                     + " "
                     + (port["cat"] + "/" + port["name"]).ljust(size_1column + 1)
-                    + uni_line_vertical
+                    + box_line_vertical
                     + port["ver"].rjust(size_2column + 1)
                     + " "
-                    + uni_line_vertical
+                    + box_line_vertical
                     + port["newver"].rjust(size_3column + 1)
                     + " "
-                    + uni_line_vertical
+                    + box_line_vertical
                 )
         lines_box("bottom")
