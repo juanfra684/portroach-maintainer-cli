@@ -54,17 +54,17 @@ if args.plain:
     box_line_vertical = "|"
     box_line_external_vertical = box_line_vertical
 elif args.dos:
-    box_left_top = "╔"  # ┌
-    box_left_bottom = "╚"  # └
-    box_right_top = "╗"  # ┐
-    box_right_bottom = "╝"  # ┘
-    box_middle_top = "╤"  # ┬
-    box_middle_bottom = "╧"  # ┴
-    box_middle_left = "╠"  # ├
-    box_middle_right = "╣"  # ┤
-    box_crux = "╪"  # ┼
-    box_line_horizontal = "═"  # ═
-    box_line_vertical = "│"  # │
+    box_left_top = "╔"
+    box_left_bottom = "╚"
+    box_right_top = "╗"
+    box_right_bottom = "╝"
+    box_middle_top = "╤"
+    box_middle_bottom = "╧"
+    box_middle_left = "╠"
+    box_middle_right = "╣"
+    box_crux = "╪"
+    box_line_horizontal = "═"
+    box_line_vertical = "│"
     box_line_external_vertical = "║"
 else:
     box_left_top = "┌"
