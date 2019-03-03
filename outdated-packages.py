@@ -159,32 +159,36 @@ if maintainers_found == 0:
 elif maintainers_found > 1:
     sys.exit("There are various entries containing " + '"' + args.email + '".')
 
-for maintainer in maintainers:
-    if args.email in maintainer["maintainer"]:
-        maintained_ports = json_request(maintainer["maintainer"])
-        for port in maintained_ports:
-            if port["newver"]:
-                if len(port["cat"]) + len(port["name"]) + 1 > size_1column:
-                    size_1column = len(port["cat"]) + len(port["name"]) + 1
-                if len(port["ver"]) > size_2column:
-                    size_2column = len(port["ver"])
-                if len(port["newver"]) > size_3column:
-                    size_3column = len(port["newver"])
+maintainer_name = [
+    maintainer["maintainer"]
+    for maintainer in maintainers
+    if args.email in maintainer["maintainer"]
+][0]
+maintained_ports = json_request(maintainer_name)
 
-        headers_box()
-        for port in maintained_ports:
-            if port["newver"]:
-                lines_box("middle")
-                print(
-                    box_line_external_vertical
-                    + " "
-                    + (port["cat"] + "/" + port["name"]).ljust(size_1column + 1)
-                    + box_line_vertical
-                    + port["ver"].rjust(size_2column + 1)
-                    + " "
-                    + box_line_vertical
-                    + port["newver"].rjust(size_3column + 1)
-                    + " "
-                    + box_line_external_vertical
-                )
-        lines_box("bottom")
+for port in maintained_ports:
+    if port["newver"]:
+        if len(port["cat"]) + len(port["name"]) + 1 > size_1column:
+            size_1column = len(port["cat"]) + len(port["name"]) + 1
+        if len(port["ver"]) > size_2column:
+            size_2column = len(port["ver"])
+        if len(port["newver"]) > size_3column:
+            size_3column = len(port["newver"])
+
+headers_box()
+for port in maintained_ports:
+    if port["newver"]:
+        lines_box("middle")
+        print(
+            box_line_external_vertical
+            + " "
+            + (port["cat"] + "/" + port["name"]).ljust(size_1column + 1)
+            + box_line_vertical
+            + port["ver"].rjust(size_2column + 1)
+            + " "
+            + box_line_vertical
+            + port["newver"].rjust(size_3column + 1)
+            + " "
+            + box_line_external_vertical
+        )
+lines_box("bottom")
