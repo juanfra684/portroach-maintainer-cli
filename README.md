@@ -2,7 +2,7 @@ Portroach CLI client
 ====================
 
 ```plain
-$ doas pkg_add python%3.6 git
+$ doas pkg_add python%3 git
 $ git clone https://github.com/juanfra684/portroach-maintainer-cli.git
 $ cd portroach-maintainer-cli
 $ ./outdated-packages.py juanfra@openbsd.org
