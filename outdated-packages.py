@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2014-2019, Juan Francisco Cantero Hurtado <iam@juanfra.info>
+# Copyright (c) 2014-2020, Juan Francisco Cantero Hurtado <iam@juanfra.info>
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -144,6 +144,37 @@ def headers_box():
     )
 
 
+def generate_table(maintained_ports):
+    global size_1column, size_2column, size_3column
+
+    for port in maintained_ports:
+        if port["newver"]:
+            if len(port["cat"]) + len(port["name"]) + 1 > size_1column:
+                size_1column = len(port["cat"]) + len(port["name"]) + 1
+            if len(port["ver"]) > size_2column:
+                size_2column = len(port["ver"])
+            if len(port["newver"]) > size_3column:
+                size_3column = len(port["newver"])
+
+    headers_box()
+    for port in maintained_ports:
+        if port["newver"]:
+            lines_box("middle")
+            print(
+                box_line_external_vertical
+                + " "
+                + (port["cat"] + "/" + port["name"]).ljust(size_1column + 1)
+                + box_line_vertical
+                + port["ver"].rjust(size_2column + 1)
+                + " "
+                + box_line_vertical
+                + port["newver"].rjust(size_3column + 1)
+                + " "
+                + box_line_external_vertical
+            )
+    lines_box("bottom")
+
+
 maintainers = json_request("totals")["results"]
 maintainers_found = [
     maintainer["maintainer"]
@@ -153,35 +184,13 @@ maintainers_found = [
 
 if len(maintainers_found) == 0:
     sys.exit('"' + args.email + '"' + " was not found in the server.")
-elif len(maintainers_found) > 1:
-    sys.exit("There are various entries containing " + '"' + args.email + '".')
-
-maintainer_name = maintainers_found[0]
-maintained_ports = json_request(maintainer_name)
-
-for port in maintained_ports:
-    if port["newver"]:
-        if len(port["cat"]) + len(port["name"]) + 1 > size_1column:
-            size_1column = len(port["cat"]) + len(port["name"]) + 1
-        if len(port["ver"]) > size_2column:
-            size_2column = len(port["ver"])
-        if len(port["newver"]) > size_3column:
-            size_3column = len(port["newver"])
-
-headers_box()
-for port in maintained_ports:
-    if port["newver"]:
-        lines_box("middle")
-        print(
-            box_line_external_vertical
-            + " "
-            + (port["cat"] + "/" + port["name"]).ljust(size_1column + 1)
-            + box_line_vertical
-            + port["ver"].rjust(size_2column + 1)
-            + " "
-            + box_line_vertical
-            + port["newver"].rjust(size_3column + 1)
-            + " "
-            + box_line_external_vertical
-        )
-lines_box("bottom")
+else:
+    maintainers_group = []
+    for maintainer_entry in maintainers_found:
+        if maintainer_entry.count("@") == 1:
+            generate_table(json_request(maintainer_entry))
+        else:
+            maintainers_group.extend(json_request(maintainer_entry))
+    if len(maintainers_group) != 0:
+        print("\nPorts maintained with others")
+        generate_table(maintainers_group)
