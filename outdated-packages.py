@@ -147,6 +147,10 @@ def headers_box():
 def calculate_sizes(maintained_ports):
     global size_1column, size_2column, size_3column
 
+    size_1column = len(title_1column)
+    size_2column = len(title_2column)
+    size_3column = len(title_3column)
+
     for port in maintained_ports:
         if port["newver"]:
             if len(port["cat"]) + len(port["name"]) + 1 > size_1column:
