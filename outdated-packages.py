@@ -144,7 +144,7 @@ def headers_box():
     )
 
 
-def generate_table(maintained_ports):
+def calculate_sizes(maintained_ports):
     global size_1column, size_2column, size_3column
 
     for port in maintained_ports:
@@ -155,6 +155,12 @@ def generate_table(maintained_ports):
                 size_2column = len(port["ver"])
             if len(port["newver"]) > size_3column:
                 size_3column = len(port["newver"])
+
+
+def generate_table(maintained_ports):
+    global size_1column, size_2column, size_3column
+
+    calculate_sizes(maintained_ports)
 
     headers_box()
     for port in maintained_ports:
@@ -192,5 +198,13 @@ else:
         else:
             maintainers_group.extend(json_request(maintainer_entry))
     if len(maintainers_group) != 0:
-        print("\nPorts maintained with others")
+        print()
+        calculate_sizes(maintainers_group)
+        print(
+            " "
+            + "> Ports maintained with others <".center(
+                size_1column + size_2column + size_3column + 8, "="
+            )
+            + " "
+        )
         generate_table(maintainers_group)
