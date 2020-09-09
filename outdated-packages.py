@@ -147,10 +147,6 @@ def headers_box():
 def calculate_sizes(maintained_ports):
     global size_1column, size_2column, size_3column
 
-    size_1column = len(title_1column)
-    size_2column = len(title_2column)
-    size_3column = len(title_3column)
-
     for port in maintained_ports:
         if port["newver"]:
             if len(port["cat"]) + len(port["name"]) + 1 > size_1column:
@@ -163,8 +159,6 @@ def calculate_sizes(maintained_ports):
 
 def generate_table(maintained_ports):
     global size_1column, size_2column, size_3column
-
-    calculate_sizes(maintained_ports)
 
     headers_box()
     for port in maintained_ports:
@@ -195,15 +189,22 @@ maintainers_found = [
 if len(maintainers_found) == 0:
     sys.exit('"' + args.email + '"' + " was not found in the server.")
 else:
+    maintainer = []
     maintainers_group = []
+
     for maintainer_entry in maintainers_found:
         if maintainer_entry.count("@") == 1:
-            generate_table(json_request(maintainer_entry))
+            maintainer.extend(json_request(maintainer_entry))
         else:
             maintainers_group.extend(json_request(maintainer_entry))
+
+    calculate_sizes(maintainer)
+    calculate_sizes(maintainers_group)
+
+    generate_table(maintainer)
+
     if len(maintainers_group) != 0:
         print()
-        calculate_sizes(maintainers_group)
         print(
             " "
             + "> Ports maintained with others <".center(
